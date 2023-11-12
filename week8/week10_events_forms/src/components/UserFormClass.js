@@ -1,69 +1,127 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react';
 
-export default function UserFormFunction() {
-    var [user, setUser]= useState({
-        email: '',
-        password: '',
-        gender: '',
-        country: ''
-    })
+class UserFormClass extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {
+                email: '',
+                password: '',
+                gender: '',
+                country: '',
+            },
+        };
 
-    const countries = ['India', 'USA', 'UK', 'Canada', 'Australia']
-
-    const onValueChanged = (event) => {
-        event.preventDefault()
-        setUser({
-            ...user,
-            [event.target.name]: event.target.value
-        })
+        this.countries = ['India', 'USA', 'UK', 'Canada', 'Australia'];
     }
 
-    const onSubmitForm = (event) => {
-        event.preventDefault()
-        console.log(user)
-    }
+    onValueChanged = (event) => {
+        const { name, value } = event.target;
+        this.setState((prevState) => ({
+            user: {
+                ...prevState.user,
+                [name]: value,
+            },
+        }));
+    };
 
-    return (
-    <div>
-        <h1>User Form Function</h1>
-        <form onSubmit={(e) => onSubmitForm(e)} > 
-                    <input 
-                        name='email'
-                        type="text"
-                        onChange={(e) => onValueChanged(e)} 
-                        placeholder="Enter Email" />
+    onSubmitForm = (event) => {
+        event.preventDefault();
+        console.log('Form Data:', this.state.user);
+        
+    };
 
-                    <input 
-                        name='password'
-                        type="password"
-                        onChange={(e) => onValueChanged(e)} 
-                        placeholder="Enter Password" />
+    render() {
+        return (
+            <div style={{ maxWidth: '400px', margin: 'auto' }}>
+                <h1>Data Entry Form (Class Component)</h1>
+                <form
+                    onSubmit={this.onSubmitForm}
+                    style={{
+                        border: '1px solid #ccc',
+                        padding: '20px',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Email:
+                        </label>
+                        <input
+                            name="email"
+                            type="text"
+                            onChange={this.onValueChanged}
+                            placeholder="Enter Email"
+                            required
+                        />
+                    </div>
 
-                    <input 
-                        name='gender'
-                        type="radio"
-                        value="Male"
-                        onChange={(e) => onValueChanged(e)} /> Male
-                    
-                    <input 
-                        name='gender'
-                        type="radio"
-                        value="Female"
-                        onChange={(e) => onValueChanged(e)} /> Female
-                    
-                    <select name='country' onChange={(e) => onValueChanged(e)}>
-                        {
-                            countries.map((country) => (
-                                 <option key={country} value={country}>{country}</option>
-                            ))
-                        }
-                    </select>
-                    
-                    <input 
-                        name='btnSubmit'
-                        type="submit"
-                        value="Login" />
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Password:
+                        </label>
+                        <input
+                            name="password"
+                            type="password"
+                            onChange={this.onValueChanged}
+                            placeholder="Enter Password"
+                            required
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Gender:
+                        </label>
+                        <label style={{ marginRight: '15px' }}>
+                            <input
+                                name="gender"
+                                type="radio"
+                                value="Male"
+                                onChange={this.onValueChanged}
+                                required
+                            />{' '}
+                            Male
+                        </label>
+                        <label>
+                            <input
+                                name="gender"
+                                type="radio"
+                                value="Female"
+                                onChange={this.onValueChanged}
+                                required
+                            />{' '}
+                            Female
+                        </label>
+                    </div>
+
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>
+                            Country:
+                        </label>
+                        <select
+                            name="country"
+                            onChange={this.onValueChanged}
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Select Country
+                            </option>
+                            {this.countries.map((country) => (
+                                <option key={country} value={country}>
+                                    {country}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
                 </form>
-    </div>
-  )
+            </div>
+        );
+    }
 }
+
+export default UserFormClass;
